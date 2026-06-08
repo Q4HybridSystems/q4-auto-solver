@@ -15,126 +15,121 @@
     </style>
 </head>
 <body>
-    <h1>🧬 Q4 Outbreak Auto-Solver</h1>
+    <h1>Q4 Outbreak Auto-Solver</h1>
     <p>Live WHO Disease Outbreak News monitor. All cures are computationally designed, open-source (CC BY 4.0), and public domain.</p>
-    <div id="status" class="status">⏳ Fetching live WHO outbreak data...</div>
+    <div id="status" class="status">Fetching live WHO outbreak data...</div>
     <div id="feed"></div>
     <div class="footer">
-        <p>Developed by <a href="https://orcid.org/0009-0008-3982-8362" target="_blank">Tyler J. Robinson</a> – Q4 Hybrid Systems</p>
+        <p>Developed by <a href="https://orcid.org/0009-0008-3982-8362" target="_blank">Tyler J. Robinson</a> - Q4 Hybrid Systems</p>
         <p>Data source: <a href="https://www.who.int/emergencies/disease-outbreak-news" target="_blank">WHO Disease Outbreak News</a></p>
         <p>Full cure registry: <a href="https://doi.org/10.5281/zenodo.20585515" target="_blank">Zenodo DOI: 10.5281/zenodo.20585515</a></p>
     </div>
 
     <script>
-        // Q4 Disease Registry – maps WHO disease names to π‑cures
-        const registry = {
-            "ebola": { drug: "π-Lipid-Envelope-Destabilizer + π-Interferon-Restorer", efficacy: "100%" },
-            "hantavirus": { drug: "π-Endothelial-Barrier-Stabilizer + π-Polymerase-Inhibitor", efficacy: "99.9%" },
-            "west nile": { drug: "π-NS3-Helicase-Inhibitor + π-Neuro-Invasion-Blocker", efficacy: "99.8%" },
-            "dengue": { drug: "π-NS1-Toxin-Neutralizer + π-ADE-Blocker", efficacy: "100%" },
-            "zika": { drug: "π-NS5-Polymerase-Inhibitor + π-Fetal-Neuroprotectant", efficacy: "100%" },
-            "chikungunya": { drug: "π-E1-Fusion-Peptide-Blocker + π-Arthritis-Reverser", efficacy: "100%" },
-            "yellow fever": { drug: "π-C-capsid-Assembler-Inhibitor + π-Hepatocyte-Protectant", efficacy: "100%" },
-            "marburg": { drug: "π-Filovirus-Fusion-Blocker", efficacy: "100%" },
-            "cholera": { drug: "π-CTX-Toxin-Neutralizer + π-Oral-Rehydration-Enhancer", efficacy: "99.9%" },
-            "malaria": { drug: "π-Heme-Polymerase-Inhibitor + π-Merozoite-Invasion-Blocker", efficacy: "100%" },
-            "monkeypox": { drug: "π-Pox-Entry-Inhibitor", efficacy: "99.9%" },
-            "covid": { drug: "π-Spike-Disruptor (A314) + π-MPro-Inhibitor", efficacy: "100%" },
-            "influenza": { drug: "π-Neuraminidase-Blocker", efficacy: "100%" },
-            "plague": { drug: "π-Type-III-Secretion-Blocker", efficacy: "100%" },
-            "lassa": { drug: "π-Lassa-GP1-Binder + π-Ribavirin-Enhancer", efficacy: "99.7%" },
-            "nipah": { drug: "π-Hendra-Nipah-Fusion-Inhibitor", efficacy: "99.9%" },
-            "rift valley": { drug: "π-NSs-Protein-Silencer", efficacy: "99.8%" },
-            "leptospirosis": { drug: "π-Spirochete-Outer-Membrane-Disruptor", efficacy: "99.5%" },
-            "meningitis": { drug: "π-BBB-Shuttle + π-Bacterial-Capsule-Disruptor", efficacy: "99.8%" },
-            "hepatitis": { drug: "π-cccDNA-Silencer (HBV) / π-NS5B+NS3-Inhibitor (HCV)", efficacy: "99.9%" }
+        var registry = {
+            "ebola": { drug: "Pi-Lipid-Envelope-Destabilizer + Pi-Interferon-Restorer", efficacy: "100%" },
+            "hantavirus": { drug: "Pi-Endothelial-Barrier-Stabilizer + Pi-Polymerase-Inhibitor", efficacy: "99.9%" },
+            "west nile": { drug: "Pi-NS3-Helicase-Inhibitor + Pi-Neuro-Invasion-Blocker", efficacy: "99.8%" },
+            "dengue": { drug: "Pi-NS1-Toxin-Neutralizer + Pi-ADE-Blocker", efficacy: "100%" },
+            "zika": { drug: "Pi-NS5-Polymerase-Inhibitor + Pi-Fetal-Neuroprotectant", efficacy: "100%" },
+            "chikungunya": { drug: "Pi-E1-Fusion-Peptide-Blocker + Pi-Arthritis-Reverser", efficacy: "100%" },
+            "yellow fever": { drug: "Pi-C-capsid-Assembler-Inhibitor + Pi-Hepatocyte-Protectant", efficacy: "100%" },
+            "marburg": { drug: "Pi-Filovirus-Fusion-Blocker", efficacy: "100%" },
+            "cholera": { drug: "Pi-CTX-Toxin-Neutralizer + Pi-Oral-Rehydration-Enhancer", efficacy: "99.9%" },
+            "malaria": { drug: "Pi-Heme-Polymerase-Inhibitor + Pi-Merozoite-Invasion-Blocker", efficacy: "100%" },
+            "monkeypox": { drug: "Pi-Pox-Entry-Inhibitor", efficacy: "99.9%" },
+            "covid": { drug: "Pi-Spike-Disruptor (A314) + Pi-MPro-Inhibitor", efficacy: "100%" },
+            "influenza": { drug: "Pi-Neuraminidase-Blocker", efficacy: "100%" },
+            "plague": { drug: "Pi-Type-III-Secretion-Blocker", efficacy: "100%" },
+            "lassa": { drug: "Pi-Lassa-GP1-Binder + Pi-Ribavirin-Enhancer", efficacy: "99.7%" },
+            "nipah": { drug: "Pi-Hendra-Nipah-Fusion-Inhibitor", efficacy: "99.9%" },
+            "rift valley": { drug: "Pi-NSs-Protein-Silencer", efficacy: "99.8%" },
+            "leptospirosis": { drug: "Pi-Spirochete-Outer-Membrane-Disruptor", efficacy: "99.5%" },
+            "meningitis": { drug: "Pi-BBB-Shuttle + Pi-Bacterial-Capsule-Disruptor", efficacy: "99.8%" },
+            "hepatitis": { drug: "Pi-cccDNA-Silencer (HBV) / Pi-NS5B+NS3-Inhibitor (HCV)", efficacy: "99.9%" }
         };
 
         function findCure(diseaseText) {
-            const text = diseaseText.toLowerCase();
-            for (const [key, value] of Object.entries(registry)) {
-                if (text.includes(key)) return value;
+            var text = diseaseText.toLowerCase();
+            for (var key in registry) {
+                if (text.indexOf(key) !== -1) return registry[key];
             }
             return null;
         }
 
         function renderOutbreaks(items) {
-            const feed = document.getElementById("feed");
-            const status = document.getElementById("status");
-            
+            var feed = document.getElementById("feed");
+            var status = document.getElementById("status");
+
             if (!items || items.length === 0) {
-                status.innerHTML = "✅ No active WHO outbreak alerts at this time. Monitoring continues.";
+                status.innerHTML = "No active WHO outbreak alerts at this time. Monitoring continues.";
                 feed.innerHTML = "";
                 return;
             }
 
-            status.innerHTML = `🟢 Live – ${items.length} WHO outbreak(s) detected`;
+            status.innerHTML = "Live - " + items.length + " WHO outbreak(s) detected";
             feed.innerHTML = "";
 
-            items.forEach(item => {
-                const diseaseText = item.title || "";
-                const cure = findCure(diseaseText);
-                
-                let cureHTML = "";
+            items.forEach(function(item) {
+                var diseaseText = item.title || "";
+                var cure = findCure(diseaseText);
+
+                var cureHTML = "";
                 if (cure) {
-                    cureHTML = `
-                        <div class="cure">
-                            <strong>✅ Q4 π‑CURE DEPLOYED:</strong> ${cure.drug}<br>
-                            <em>In-silico efficacy: ${cure.efficacy}</em><br>
-                            <small>Full details: <a href="https://doi.org/10.5281/zenodo.20585646" target="_blank">Q4 Cure Paper (DOI: 10.5281/zenodo.20585646)</a></small>
-                        </div>
-                    `;
+                    cureHTML = '<div class="cure"><strong>Q4 Pi-CURE DEPLOYED:</strong> ' + cure.drug + '<br><em>In-silico efficacy: ' + cure.efficacy + '</em><br><small>Full details: <a href="https://doi.org/10.5281/zenodo.20585646" target="_blank">Q4 Cure Paper (DOI: 10.5281/zenodo.20585646)</a></small></div>';
                 } else {
-                    cureHTML = `
-                        <div class="no-cure">
-                            <strong>⚠️ NEW PATHOGEN DETECTED:</strong> This disease is not yet in the Q4 registry.<br>
-                            <small>Automated GUS simulation would design a π‑candidate within hours. <a href="https://doi.org/10.5281/zenodo.20586249" target="_blank">See Q4‑DeepSeek AI model</a>.</small>
-                        </div>
-                    `;
+                    cureHTML = '<div class="no-cure"><strong>NEW PATHOGEN DETECTED:</strong> This disease is not yet in the Q4 registry.<br><small>Automated GUS simulation would design a Pi-candidate within hours. <a href="https://doi.org/10.5281/zenodo.20586249" target="_blank">See Q4-DeepSeek AI model</a>.</small></div>';
                 }
 
-                feed.innerHTML += `
-                    <div class="alert">
-                        <strong>🚨 WHO OUTBREAK:</strong> ${item.title}<br>
-                        <small>${item.pubDate || ""} – <a href="${item.link || '#'}" target="_blank">WHO source</a></small>
-                        ${cureHTML}
-                    </div>
-                `;
+                feed.innerHTML += '<div class="alert"><strong>WHO OUTBREAK:</strong> ' + item.title + '<br><small>' + (item.pubDate || "") + ' - <a href="' + (item.link || "#") + '" target="_blank">WHO source</a></small>' + cureHTML + '</div>';
             });
         }
 
-        async function fetchWHO() {
-            const status = document.getElementById("status");
-            try {
-                // Use a CORS proxy to fetch the WHO RSS feed
-                const proxyUrl = "https://api.rss2json.com/v1/api.json?rss_url=";
-                const whoFeedUrl = encodeURIComponent("https://www.who.int/rss-feeds/disease-outbreak-news/en/");
-                const response = await fetch(proxyUrl + whoFeedUrl);
-                const data = await response.json();
-                
-                if (data.status === "ok" && data.items) {
-                    renderOutbreaks(data.items.slice(0, 10));
+        function fetchWHO() {
+            var status = document.getElementById("status");
+            var proxyUrl = "https://api.rss2json.com/v1/api.json?rss_url=";
+            var whoFeedUrl = encodeURIComponent("https://www.who.int/rss-feeds/disease-outbreak-news/en/");
+            var url = proxyUrl + whoFeedUrl;
+
+            var xhr = new XMLHttpRequest();
+            xhr.open("GET", url, true);
+            xhr.onload = function() {
+                if (xhr.status === 200) {
+                    try {
+                        var data = JSON.parse(xhr.responseText);
+                        if (data.status === "ok" && data.items) {
+                            renderOutbreaks(data.items.slice(0, 10));
+                        } else {
+                            status.innerHTML = "Unable to fetch live WHO data. Displaying simulated feed as fallback.";
+                            renderOutbreaks([
+                                { title: "Ebola disease outbreak - Congo", pubDate: new Date().toDateString(), link: "#" },
+                                { title: "Dengue - Brazil", pubDate: new Date().toDateString(), link: "#" },
+                                { title: "Cholera - Malawi", pubDate: new Date().toDateString(), link: "#" }
+                            ]);
+                        }
+                    } catch (e) {
+                        status.innerHTML = "Error processing WHO data. Displaying simulated feed.";
+                        renderOutbreaks([
+                            { title: "Ebola disease outbreak - Congo", pubDate: new Date().toDateString(), link: "#" }
+                        ]);
+                    }
                 } else {
-                    status.innerHTML = "⚠️ Unable to fetch live WHO data. Displaying simulated feed as fallback.";
-                    // Fallback to simulated data
-                    const simulated = [
-                        { title: "Ebola disease outbreak – Congo", pubDate: new Date().toDateString(), link: "#" },
-                        { title: "Dengue – Brazil", pubDate: new Date().toDateString(), link: "#" },
-                        { title: "Cholera – Malawi", pubDate: new Date().toDateString(), link: "#" }
-                    ];
-                    renderOutbreaks(simulated);
+                    status.innerHTML = "Network error. Displaying simulated feed as fallback.";
+                    renderOutbreaks([
+                        { title: "Ebola disease outbreak - Congo", pubDate: new Date().toDateString(), link: "#" },
+                        { title: "Dengue - Brazil", pubDate: new Date().toDateString(), link: "#" }
+                    ]);
                 }
-            } catch (error) {
-                status.innerHTML = "⚠️ Network error. Displaying simulated feed as fallback.";
-                const simulated = [
-                    { title: "Ebola disease outbreak – Congo", pubDate: new Date().toDateString(), link: "#" },
-                    { title: "Dengue – Brazil", pubDate: new Date().toDateString(), link: "#" }
-                ];
-                renderOutbreaks(simulated);
-            }
+            };
+            xhr.onerror = function() {
+                status.innerHTML = "Network error. Displaying simulated feed as fallback.";
+                renderOutbreaks([
+                    { title: "Ebola disease outbreak - Congo", pubDate: new Date().toDateString(), link: "#" }
+                ]);
+            };
+            xhr.send();
         }
 
-        // Fetch on load, then every 15 minutes
         fetchWHO();
         setInterval(fetchWHO, 15 * 60 * 1000);
     </script>
